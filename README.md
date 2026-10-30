@@ -4,7 +4,7 @@ An end-to-end, engineering-focused machine learning project to predict machine f
 
 ## Business problem
 
-Unexpected equipment failures can cause unplanned downtime, maintenance expense and production disruption. This project explores whether machine operating measurements can identify elevated failure risk early enough to help maintenance teams prioritize inspections.
+Manufacturing equipment failures can result in unplanned downtime, increased maintenance costs and production disruptions. This project aims to develop a machine learning system that analyzes machine sensor measurements and identifies operating conditions associated with failures. The system helps maintenance teams flag potentially problematic conditions and prioritize machines for further inspection.
 
 ## Dataset
 
