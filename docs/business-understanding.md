@@ -1,65 +1,73 @@
 # Business Understanding
 
-> Status: Working document — complete this during Milestone 1. Do not start modelling until the decision and evaluation approach are clear.
+> Status: Completed — Milestone
 
-## 1. Business problem
-Unexpected machine failures can cause unplanned downtime, maintenance expense and production disruption. The proposed system estimates failure risk from operating measurements to help maintenance teams prioritize inspection.
+## 1. Business Problem
+Unexpected machine failures can cause unplanned downtime, increased maintenance expenses, and production disruptions.
+The proposed system analyzes machine operating measurements and classifies each observation as normal or failure-associated. It also generates a probability score indicating the likelihood that the observation belongs to the failure-associated class.
+This helps maintenance teams flag potentially problematic conditions and prioritize inspections.
 
-## 2. Intended user and decision
-- **Proposed user:** maintenance planner or operations engineer.
-- **Decision to support:** which machine should be inspected or scheduled for preventive maintenance?
-- **Action after prediction:** review high-risk machines; the model does not autonomously shut down equipment or schedule maintenance.
+## 2. Stakeholders and Business Decisions
+- **Primary stakeholder:** Maintenance team.
+- **Supporting stakeholder:** Manufacturing operations manager.
+- **Model output:** Classification and probability score.
+- **Business decision:** Which machine conditions should be investigated first?
+- **Action after prediction:** Review observations with higher failure-classification scores.
 
-## 3. ML formulation
+## 3. ML Problem Formulation
 - **Task:** supervised binary classification.
 - **Prediction unit:** one machine observation/operating snapshot in the dataset.
 - **Target:** `Machine failure` (0 = no failure, 1 = failure).
 - **Inputs:** available operating measurements and eligible machine attributes.
-- **Prediction output:** failure probability plus a decision at a selected threshold.
+- **Prediction output:** predicted class and Estimated probability of belonging to the failure-associated class.
 
-## 4. Business costs and trade-offs
-- False negative: a failure is missed, potentially leading to unplanned downtime.
-- False positive: maintenance attention is spent on a machine that would not fail in the relevant prediction window.
-- True positive: a risky machine is correctly flagged.
-- True negative: a non-failing machine is correctly not flagged.
+## 4. Features and Target Variable
+- Input features (X): Type, Air temperature, Process temperature, Rotational speed, Torque, Tool wear
+- Target (y): Machine failure
+- Exclude: TWF, HDF, PWF, OSF, RNF
 
-The relative costs are not provided by the dataset. They must be treated as assumptions until validated with an operations stakeholder. Do not invent financial savings.
+- UDI and Product ID (not useful as predictive measurements for this formulation).
 
-## 5. Success measures
+## 5. Business Success Criteria
+- Failure detection: How many failure-associated observations are identified?
+- False alarms: How many non-failure observations are incorrectly flagged?
+- Inspection efficiency: Whether the maintenance team can prioritize the most concerning observations.
+- Mention that measurable targets are still to be established.
 
-### Business measures (to define)
-- Cost of missed failures.
-- Cost of unnecessary inspections/interventions.
-- Downtime avoided (not measurable from this synthetic dataset alone).
-- Maintenance-team alert capacity per shift/day.
-
-### ML measures (candidate set)
+## 6. ML Evaluation Metrics
 - Recall for the failure class.
 - Precision for the failure class.
 - F1 score.
 - Precision-recall AUC (especially relevant if failures are rare).
 - Confusion matrix at the chosen operating threshold.
-- ROC-AUC as a secondary ranking metric.
+- Accuracy: Will be reported, but as the secondary metric.
+- Select the classification threshold based on the precision-recall trade-off and the relative business costs of false positives and false negatives.
 
-Accuracy alone is insufficient when the positive class is rare.
+## 7. Assumptions and Limitations
+| Assumption               | Explanation                                                                            |
+| ------------------------ | -------------------------------------------------------------------------------------- |
+| Data quality             | Sensor measurements are sufficiently accurate and reliable.                            |
+| Representative data      | Training data represents the operating conditions where the model will be used.        |
+| Label correctness        | `Machine failure` labels are correctly recorded.                                       |
+| Feature availability     | All six selected input features are available when making predictions.                 |
+| Consistent relationships | Relationships between sensor measurements and failure labels remain reasonably stable. |
 
-## 6. Data and modelling assumptions to validate
-- Dataset is synthetic; results may not generalize to real equipment.
-- Each row represents an observation, not necessarily an independent machine/time sequence.
-- The dataset does not establish a reliable real-world prediction horizon or maintenance intervention window.
-- Failure-mode indicator columns are labels derived from failure information and must not be used as predictors for `Machine failure`.
-- Any split strategy must reflect the intended deployment setting and available identifiers/time structure.
+### Dataset limitations
+Our AI4I dataset has some important limitations:
+- Synthetic data: It does not represent actual industrial operating conditions perfectly.
+- No timestamps: We cannot establish chronological machine behaviour.
+- No future failure labels: We cannot predict whether a machine will fail within the next 24 hours or another future horizon.
+- Limited observations: It contains 10,000 records, which may not capture all failure scenarios.
+- Class imbalance: Failure observations are much less frequent than normal observations.
 
-## 7. Open decisions
-- What lead time should a prediction provide in a real deployment?
-- What is the acceptable number of false alerts for the maintenance team?
-- What are the relative costs of false negatives and false positives?
-- Is the objective to maximize recall subject to an alert-capacity/precision constraint?
+### Business implications
+Our model can demonstrate:
+- Binary failure classification.
+- Failure detection and inspection prioritization.
+- ML model evaluation and deployment.
+- Production simulation, monitoring and retraining workflows.
 
-## 8. Milestone 1 exit checklist
-- [ ] State the business decision in one sentence.
-- [ ] Confirm prediction unit and target.
-- [ ] Explain false-positive and false-negative consequences.
-- [ ] Select primary and supporting ML metrics with rationale.
-- [ ] List assumptions and dataset limitations.
-- [ ] Define what this project can and cannot claim.
+It cannot establish:
+- Actual future failure prediction.
+- Real-world maintenance cost savings.
+- Production-grade industrial performance.
