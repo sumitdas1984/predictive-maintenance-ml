@@ -80,4 +80,4 @@ Directories for later milestones may initially contain only placeholders. Implem
 
 ## Current milestone
 
-**Milestone 1 — Business Understanding.** Define the operational decision, prediction target, costs of false positives/false negatives, success measures and dataset limitations before modelling.
+**Milestone 2 — Data Collection.** Reproducible acquisition and source record.

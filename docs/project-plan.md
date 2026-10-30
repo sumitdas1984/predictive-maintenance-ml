@@ -46,8 +46,8 @@ Unexpected machine failures can cause unplanned downtime, maintenance expense an
 
 | # | Lifecycle stage | Exit deliverable | Status |
 |---|---|---|---|
-| 1 | Business understanding | Decision statement, target, costs, KPIs, assumptions and limitations | In progress |
-| 2 | Data collection | Reproducible acquisition and source record | Not started |
+| 1 | Business understanding | Decision statement, target, costs, KPIs, assumptions and limitations | Completed |
+| 2 | Data collection | Reproducible acquisition and source record | In progress |
 | 3 | Data preprocessing | Validated, leakage-safe preprocessing pipeline and split strategy | Not started |
 | 4 | Feature engineering | Documented and tested feature transformations | Not started |
 | 5 | Feature selection | Comparison of selection methods and rationale | Not started |
